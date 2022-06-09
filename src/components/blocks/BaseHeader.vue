@@ -3,10 +3,12 @@
         <h1>Hello</h1>
         <div class="research">
             <form @submit.prevent = "searchBar()">
-                <label>search movie</label>
-                <input type="text" placeholder="Search" v-model="selectedMovie">
-                <label>search tv-series</label>
-                <input type="text" placeholder="Search" v-model="selectedTvSeries">
+                <div>
+                    <label>search movie</label>
+                    <input type="text" placeholder="Search" v-model="selectedMovie">
+                    <label>search tv-series</label>
+                    <input type="text" placeholder="Search" v-model="selectedTvSeries">
+                </div>
                 <button type="submit">Search</button>
             </form>
         </div>
