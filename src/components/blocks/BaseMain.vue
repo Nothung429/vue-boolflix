@@ -1,15 +1,28 @@
 <template>
     <main>
-
+        <div class="container">
+            <MovieSection/>
+            <TvSeriesSection/>
+        </div>
     </main>
 </template>
 
 <script>
-    export default {
+    import MovieSection from '../sections/MovieSection.vue'
+    import TvSeriesSection from '../sections/TvSeriesSection.vue'
 
+    export default {
+        components: {
+            MovieSection,
+            TvSeriesSection,
+        }
     }
 </script>
 
 <style lang="scss" scoped>
+    .container {
+        max-width: 1200px;
+        margin: auto;
+    }
 
 </style>
