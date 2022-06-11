@@ -1,8 +1,8 @@
 <template>
     <div>
-        <h2>TV Series</h2>
-        <ul class="row">
-            <li class="series col-2" v-for="(tvSerie, index) in PageArray.tvSeries" :key="index">
+        <h2 class="my-5">TV Series</h2>
+        <ul class="row justify-content-center">
+            <li class="series col-2 m-3 p-2" v-for="(tvSerie, index) in PageArray.tvSeries" :key="index">
                 <img :src="`https://image.tmdb.org/t/p/w154/${tvSerie.poster_path}`" alt="">
                 <h3>{{tvSerie.name}}</h3>
                 <h4>{{tvSerie.original_name}}</h4>
@@ -28,6 +28,7 @@
 
 <style lang="scss" scoped>
     .series {
-        color: red;
+        background-color: #0339fc;
+        color: #fff;
     }    
 </style>

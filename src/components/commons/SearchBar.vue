@@ -1,9 +1,7 @@
 <template>
     <div class="research">
-        <form @submit.prevent = "searchBar()">
-            <div class="research__input">
-                <input type="text" placeholder="Search" v-model="selected">
-            </div>
+        <form @submit.prevent = "searchBar()" class="d-flex">
+            <input class="me-3" type="text" placeholder="Search" v-model="selected">
             <button type="submit">Search</button>
         </form>
     </div>
@@ -34,6 +32,7 @@
                 )
                 .then((response) => {
                     this.PageArray.movies = response.data.results;
+                    this.selected = "";
                 })
                 .catch((error) => {
                     console.log(error);
@@ -50,6 +49,7 @@
                 )
                 .then((response) => {
                     this.PageArray.tvSeries = response.data.results;
+                    this.selected = "";
                 })
                 .catch((error) => {
                     console.log(error);
@@ -63,12 +63,12 @@
     .research {
         margin-right: 60px;
         form {
-            display: flex;
-            p {
+            input, button {
+                background-color: #5b5b5b;
                 color: #fff;
-            }
-            input {
+                border: none;
                 padding: 5px 20px;
+                border-radius: 10px;
             }
         }
     }
