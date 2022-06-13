@@ -1,13 +1,17 @@
 <template>
     <div>
-        <h2 class="my-5">TV Series</h2>
+        <h2 class="title-tv my-3">TV Series</h2>
         <ul class="row justify-content-center">
-            <li class="series col-2 m-3 p-2" v-for="(tvSerie, index) in PageArray.tvSeries" :key="index">
-                <img :src="`https://image.tmdb.org/t/p/w154/${tvSerie.poster_path}`" alt="">
-                <h3>{{tvSerie.name}}</h3>
-                <h4>{{tvSerie.original_name}}</h4>
-                <h5>{{tvSerie.vote_average}}</h5>
-                <img class="flag" :src="seriesFlag(tvSerie.original_language)" alt="language-flag">
+            <li class="series col-3 m-3" v-for="(tvSerie, index) in PageArray.tvSeries" :key="index" @mouseover="hover = true"
+            @mouseleave="hover = false">
+                <div class="series__overlay p-2 overflow-auto" v-if="hover">
+                    <h3>Titolo: <span>{{tvSerie.name}}</span></h3>
+                    <h4>Titolo Originale: <span>{{tvSerie.original_name}}</span></h4>
+                    <p class="stars" v-html="getVote(tvSerie.vote_average)"></p>
+                    <p>Lingua: <img class="flag" :src="seriesFlag(tvSerie.original_language)" alt="language-flag"></p>
+                    <p>Sinossi: <span>{{tvSerie.overview}}</span></p>
+                </div>
+                <img :src="getPoster(tvSerie.poster_path)" :alt="tvSerie.name">
             </li>
         </ul>
     </div>
@@ -21,6 +25,7 @@
         data () {
             return {
                 PageArray,
+                hover: false,
                 DataFlags: {
                     it: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/280px-Flag_of_Italy.svg.png",
                     en: "https://www.mlaworld.com/wp-content/uploads/2021/07/metà-bandiera-americana-e-inglese.png",
@@ -35,6 +40,13 @@
             }
         },
         methods: {
+            getPoster(poster) {
+                if (poster === null) {
+                    return `https://via.placeholder.com/400x500`
+                } else {
+                    return `https://image.tmdb.org/t/p/w342/${poster}`
+                }
+            },
             seriesFlag(language) {
                 if (language === "it") {
                     return this.DataFlags.it
@@ -56,16 +68,54 @@
                     return this.DataFlags.world
                 }
             },
+            getVote(vote) {
+                let fullStar = "";
+                let emptyStar = "";
+                for (let i = 0 ; i < (Math.ceil(vote / 2)) ; i++) {
+                    fullStar += `<i class="fa-solid fa-star"></i>`;
+                }
+                for (let i = 0 ; i < (5 - Math.ceil(vote / 2)) ; i++) {
+                    emptyStar += `<i class="fa-regular fa-star"></i> `;
+                }
+                return `${fullStar}${emptyStar}`;                
+            }
         },
     }
 </script>
 
 <style lang="scss" scoped>
-    .series {
-        background-color: #0339fc;
+    .title-tv {
         color: #fff;
+        font-size: 46px;
+    }
+    .series {
+        position: relative;
+        color: #fff;
+        height: 400px;
+        width: 300px;
+        .stars {
+            color: #eba834;
+        }
         .flag {
-            max-width: 100px;
+            max-width: 60px;
+        }
+        img {
+            width: 100%;
+            height: 100%;
+        }
+        &__overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            background-color: rgba(0,0,0,0.9);
+            color: #fff;
+            opacity: 1;
+            span {
+                color: #878683;
+            }
         }
     }    
 </style>
