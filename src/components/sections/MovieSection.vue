@@ -1,13 +1,17 @@
 <template>
     <div>
-        <h2 class="my-5">Movies</h2>
+        <h2 class="title-movie my-3">Movies</h2>
         <ul class="row justify-content-center">
-            <li class="movies col-2 m-3 p-2" v-for="(movie, index) in PageArray.movies" :key="index">
-                <img :src="`https://image.tmdb.org/t/p/w154/${movie.poster_path}`" alt="">
-                <h3>{{movie.title}}</h3>
-                <h4>{{movie.original_title}}</h4>
-                <h5>{{movie.vote_average}}</h5>
-                <img class="flag" :src="movieFlag(movie.original_language)" alt="language-flag">
+            <li class="movies col-3 m-3" v-for="(movie, index) in PageArray.movies" :key="index" @mouseover="hover = true"
+            @mouseleave="hover = false">
+                <div class="movies__overlay p-2 overflow-auto" v-if="hover">
+                    <h3>Titolo: <span>{{movie.title}}</span></h3>
+                    <h4>Titolo Originale: <span>{{movie.original_title}}</span></h4>
+                    <p class="stars" v-html="getVote(movie.vote_average)">Voto: </p>
+                    <p>Lingua: <img class="flag" :src="movieFlag(movie.original_language)" alt="language-flag"></p>
+                    <p>Sinossi: <span>{{movie.overview}}</span></p>
+                </div>
+                <img :src="getPoster(movie.poster_path)" :alt="movie.title">
             </li>
         </ul>    
     </div>
@@ -21,6 +25,7 @@
         data () {
             return {
                 PageArray,
+                hover: false,
                 DataFlags: {
                     it: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/280px-Flag_of_Italy.svg.png",
                     en: "https://www.mlaworld.com/wp-content/uploads/2021/07/metà-bandiera-americana-e-inglese.png",
@@ -35,6 +40,13 @@
             }
         },
         methods: {
+            getPoster(poster) {
+                if (poster === null) {
+                    return `https://via.placeholder.com/300x400`
+                } else {
+                    return `https://image.tmdb.org/t/p/w342/${poster}`
+                }
+            },
             movieFlag(language) {
                 if (language === "it") {
                     return this.DataFlags.it
@@ -56,16 +68,53 @@
                     return this.DataFlags.world
                 }
             },
+            getVote(vote) {
+                let fullStar = "";
+                let emptyStar = "";
+                for (let i = 0 ; i < (Math.ceil(vote / 2)) ; i++) {
+                    fullStar += `<i class="fa-solid fa-star"></i> `;
+                }
+                for (let i = 0 ; i < (5 - Math.ceil(vote / 2)) ; i++) {
+                    emptyStar += `<i class="fa-regular fa-star"></i> `;
+                }
+                return `${fullStar}${emptyStar}`;                
+            }
         },
     }
 </script>
 
 <style lang="scss" scoped>
-    .movies {
-        background-color: #831010;
+    .title-movie {
         color: #fff;
-        .flag {
-            max-width: 100px;
+        font-size: 46px;
+    }
+    .movies {
+        position: relative;
+        color: #fff;
+        height: 400px;
+        width: 300px;
+        .stars {
+            color: #eba834;
         }
-    }    
+        .flag {
+            max-width: 60px;
+        }
+        img {
+            width: 100%;
+            height: 100%;
+        }
+        &__overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            background-color: rgba(0,0,0,0.9);
+            opacity: 1;
+            span {
+                color: #878683;
+            }
+        }
+    }
 </style>
